@@ -37,6 +37,12 @@ If a small preview is need for the collapsed content, then set a `min-height` wh
     min-height: 20px;
 }
 
+// Adjust preview gradient
+.skyReveal-content:after {
+    /* Other desired styling changes */
+    background: linear-gradient(to top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%);
+}
+
 // Avoid preview in externally triggered sky-reveal
 .some-parent .skyReveal-content {
     min-height: auto;
