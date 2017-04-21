@@ -1,4 +1,4 @@
-import { TweenLite, Cubic } from 'gsap';
+import { TweenLite, Cubic } from 'gsap/TweenLite';
 
 function openAnim(el) {
 	const minHeight = window.getComputedStyle(el).minHeight;
