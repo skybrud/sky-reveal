@@ -1,24 +1,21 @@
 <script>
-import skyRevealDirective from './sky-reveal.directive';
+import Revealer from './factories/revealer';
 
 export default {
-	name: 'sky-reveal',
-	directives: {
-		'sky-reveal': skyRevealDirective,
-	},
 	props: {
-		button: Object,
-		externalId: [String, Number],
-		openReveal: {
+		revealId: {
+			type: [String, Number],
+			default: null,
+		},
+		open: {
 			type: Boolean,
-			default: undefined,
+			default: false,
 		},
 	},
 	data() {
 		return {
-			/* if openReveal is not set it will be defaulted to false */
-			open: this.openReveal !== undefined ? this.openReveal : false,
-			ariaId: this.externalId || Math.random().toString(35).substr(2, 5),
+			revealer: null,
+			activeToggle: false,
 		};
 	},
 	computed: {
@@ -27,26 +24,44 @@ export default {
 			 * Needs to stringify ariaExpanded bool to avoid ariaExpanded
 			 * being removed by VueJs
 			 **/
-			return `${this.open}`;
+			let state = this.open;
+
+			if (this.revealId) {
+				const states = this.$store.getters['skyReveal/revealStates'];
+				state = states[this.revealId];
+			}
+
+			return `${state}`;
 		},
-		buttonLabel() {
-			return this.open ? this.button.hide : this.button.show;
-		},
-		openState() {
-			/**
-			 * Must use computed value for dynamic property watch
-			 * If openReveal is not set, use skyReveals button as statetoggler
-			 **/
-			return this.openReveal !== undefined ? this.openReveal : this.open;
+		isOpen() {
+			let state = this.open;
+
+			if (this.revealId) {
+				const states = this.$store.getters['skyReveal/revealStates'];
+				state = states[this.revealId];
+			}
+
+			return state;
 		},
 	},
-	methods: {
-		toggle() {
-			this.open = !this.open;
-		},
+	mounted() {
+		this.revealer = Revealer(this.$el);
+
+		/*
+			nextTick is for avoiding runnning this.toggle() in update hook
+			the first time around.
+		*/
+		this.$nextTick(() => {
+			this.activeToggle = true;
+		});
+	},
+	updated() {
+		if (this.activeToggle) {
+			this.isOpen ? this.revealer.open() : this.revealer.close();
+		}
 	},
 };
 </script>
 
-<style src="./sky-reveal.scss"></style>
 <template src="./sky-reveal.html"></template>
+<style src="./sky-reveal.scss"></style>

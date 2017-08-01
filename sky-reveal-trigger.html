@@ -1,0 +1,13 @@
+<div
+	v-on:click="toggle"
+	v-bind:class="['sky-reveal-trigger', {open: isOpen}]">
+	<slot name="svg"></slot>
+	<slot name="svg-append"></slot>
+	<slot
+		name="open"
+		v-if="!isOpen"></slot>
+	<slot
+		name="closed"
+		v-else></slot>
+	<slot name="svg-prepend"></slot>
+</div>

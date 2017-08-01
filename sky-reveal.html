@@ -1,23 +1,7 @@
 <div
-	class="sky-reveal"
-	v-bind:aria-controls="ariaId">
-
-	<div
-		v-bind:class="['content', {closed: !openState}]"
-		v-sky-reveal="openState"
-		v-bind:aria-controls="ariaId"
-		v-bind:aria-expanded="ariaExpanded">
-		<div class="inner">
-			<slot />
-		</div>
+	v-bind:class="['sky-reveal', {closed: !isOpen}]"
+	v-bind:aria-expanded="ariaExpanded">
+	<div class="inner">
+		<slot />
 	</div>
-
-	<button
-		class="button"
-		tabindex="0"
-		v-if="button"
-		v-on:click="toggle">
-
-		{{buttonLabel}}
-	</button>
 </div>
