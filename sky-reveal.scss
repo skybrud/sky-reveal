@@ -14,7 +14,7 @@
 		opacity: 0;
 		transition: opacity 0.5s;
 		pointer-events: none;
-		background: linear-gradient(to top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		background: linear-gradient(to top, rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%);
 	}
 
 	&.closed:after {

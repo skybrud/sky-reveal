@@ -1,36 +1,31 @@
-import anime from 'animejs';
+import skyWindow from 'sky-window';
+import heightSummation from './heightCalculator';
+import animeInstance from './animeInstance';
 
 export default (target) => {
-	const duration = 500;
 	let isOpen = false;
+	const innerTarget = target.querySelector('.inner');
 	const collapsed = window.getComputedStyle(target).minHeight || 0;
-	let autoHeight = target.getBoundingClientRect().height;
+	let autoHeight = heightSummation(target, innerTarget);
 
 	target.style.height = collapsed;
 
-	const anim = anime({
-		targets: target,
-		height: [collapsed, autoHeight],
-		begin: (self) => {
-			autoHeight = target.getBoundingClientRect().height;
-			target.style.height = self.reversed ? autoHeight : collapsed;
-		},
-		complete: (self) => {
-			target.style.height = self.reversed ? collapsed : 'auto';
-		},
-		autoplay: false,
-		duration,
-		easing: 'easeInOutCubic',
+	let anim = animeInstance(target, collapsed, autoHeight);
+
+	skyWindow.resize.subscribe(() => {
+		autoHeight = heightSummation(target, innerTarget);
+		anim = animeInstance(target, collapsed, autoHeight);
 	});
 
 	const open = (toggled = false) => {
 		anim.pause();
 
 		if (anim.reversed) {
-			anim.reverse();
+			anim.direction = 'normal';
 		}
 
-		anim.play();
+		// Have to restart in order to reactivate begin & complete hook
+		anim.restart();
 
 		if (toggled) {
 			isOpen = true;
@@ -41,10 +36,11 @@ export default (target) => {
 		anim.pause();
 
 		if (!anim.reversed) {
-			anim.reverse();
+			anim.direction = 'reverse';
 		}
 
-		anim.play();
+		// Have to restart in order to reactivate begin & complete hook
+		anim.restart();
 
 		if (toggled) {
 			isOpen = false;
