@@ -1,6 +1,6 @@
 const getters = {
 	revealStates(state) {
-		return state;
+		return key => state[key];
 	},
 };
 

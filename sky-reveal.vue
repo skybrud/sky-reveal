@@ -24,24 +24,10 @@ export default {
 			 * Needs to stringify ariaExpanded bool to avoid ariaExpanded
 			 * being removed by VueJs
 			 **/
-			let state = this.open;
-
-			if (this.revealId) {
-				const states = this.$store.getters['skyReveal/revealStates'];
-				state = states[this.revealId];
-			}
-
-			return `${state}`;
+			return this.revealId ? `${this.open}` : `${this.$store.getters['skyReveal/revealStates'](this.revealId)}`;
 		},
 		isOpen() {
-			let state = this.open;
-
-			if (this.revealId) {
-				const states = this.$store.getters['skyReveal/revealStates'];
-				state = states[this.revealId];
-			}
-
-			return state;
+			return this.revealId ? this.open : this.$store.getters['skyReveal/revealStates'](this.revealId);
 		},
 	},
 	mounted() {
