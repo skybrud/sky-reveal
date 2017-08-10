@@ -14,8 +14,7 @@ export default {
 	},
 	computed: {
 		isOpen() {
-			const states = this.$store.getters['skyReveal/revealStates'];
-			return states[this.revealId];
+			return this.$store.getters['skyReveal/revealStates'](this.revealId);
 		},
 	},
 	methods: {
