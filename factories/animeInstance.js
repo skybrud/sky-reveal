@@ -6,11 +6,14 @@ export default function (target, collapsed, autoHeight) {
 	return anime({
 		targets: target,
 		height: [collapsed, autoHeight],
-		begin: (self) => {
-			target.style.height = self.reversed ? autoHeight : collapsed;
-		},
+		direction: 'reverse',
 		complete: (self) => {
-			target.style.height = self.reversed ? collapsed : 'auto';
+			if (!self.reversed) {
+				target.removeAttribute('style');
+			}
+
+			self.began = false;
+			self.completed = false;
 		},
 		autoplay: false,
 		duration,

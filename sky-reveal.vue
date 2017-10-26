@@ -43,7 +43,7 @@ export default {
 	},
 	updated() {
 		if (this.activeToggle) {
-			this.isOpen ? this.revealer.open() : this.revealer.close();
+			this.revealer.toggle();
 		}
 	},
 };
