@@ -19,19 +19,39 @@ export default {
 		};
 	},
 	computed: {
+		revealStates() {
+			return this.$store.getters['SkyReveal/revealStates'];
+		},
 		ariaExpanded() {
 			/**
 			 * Needs to stringify ariaExpanded bool to avoid ariaExpanded
 			 * being removed by VueJs
 			 **/
-			return this.revealId ? `${this.$store.getters['skyReveal/revealStates'](this.revealId)}` : `${this.open}`;
+			if (this.revealId && this.revealStates) {
+				return `${this.revealStates(this.revealId)}`;
+			} else if (!this.revealId) {
+				return `${this.open}`;
+			}
+
+			return null;
 		},
-		isOpen() {
-			return this.revealId ? this.$store.getters['skyReveal/revealStates'](this.revealId) : this.open;
+		showContent() {
+			if (this.revealId && this.revealStates) {
+				return this.revealStates(this.revealId);
+			} else if (!this.revealId) {
+				return this.open;
+			}
+
+			return null;
 		},
 	},
 	mounted() {
 		this.revealer = Revealer(this.$el);
+
+		// If open from start
+		if (this.showContent) {
+			this.revealer.open();
+		}
 
 		/*
 			nextTick is for avoiding runnning this.toggle() in update hook
@@ -43,11 +63,13 @@ export default {
 	},
 	updated() {
 		if (this.activeToggle) {
-			this.revealer.toggle();
+			this.showContent
+				? this.revealer.open()
+				: this.revealer.close();
 		}
 	},
 };
 </script>
 
-<template src="./sky-reveal.html"></template>
-<style src="./sky-reveal.scss"></style>
+<template src="./SkyReveal.html"></template>
+<style src="./SkyReveal.scss" scoped></style>

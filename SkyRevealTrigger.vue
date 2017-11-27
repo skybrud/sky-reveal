@@ -14,23 +14,23 @@ export default {
 	},
 	computed: {
 		isOpen() {
-			return this.$store.getters['skyReveal/revealStates'](this.revealId);
+			return this.$store.getters['SkyReveal/revealStates'](this.revealId);
 		},
 	},
 	methods: {
 		toggle() {
-			this.$store.dispatch('skyReveal/toggle', this.revealId);
+			this.$store.dispatch('SkyReveal/toggle', this.revealId);
 		},
 	},
-	created() {
+	mounted() {
 		const payload = {};
 		payload[this.revealId] = false;
-		this.$store.commit('skyReveal/REGISTER', payload);
+		this.$store.commit('SkyReveal/REGISTER', payload);
 	},
-	destroy() {
-		this.$store.commit('skyReveal/UNREGISTER', this.revealId);
+	beforeDestroy() {
+		this.$store.commit('SkyReveal/UNREGISTER', this.revealId);
 	},
 };
 </script>
 
-<template src="./sky-reveal-trigger.html"></template>
+<template src="./SkyRevealTrigger.html"></template>

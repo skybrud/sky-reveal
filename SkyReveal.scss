@@ -21,6 +21,10 @@
 		opacity: 1;
 	}
 
+	.inner > :last-child,
+	.inner > div > :last-child {
+		margin-bottom: 0;
+	}
 }
 
 .sky-reveal-trigger {
