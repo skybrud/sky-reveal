@@ -1,10 +1,19 @@
 export default function (element, innerElement) {
-	const lastChild = innerElement.querySelector(':last-child');
 	const firstChild = innerElement.querySelector(':first-child');
+	const lastChild = innerElement.querySelector(':last-child');
 	const innerStyles = window.getComputedStyle(innerElement);
 	const targetStyles = window.getComputedStyle(element);
-	const firstChildStyles = window.getComputedStyle(firstChild);
-	const lastChildStyles = window.getComputedStyle(lastChild);
+
+	let firstChildStyles = null;
+	let lastChildStyles = null;
+
+	if (firstChild) {
+		firstChildStyles = window.getComputedStyle(firstChild);
+	}
+
+	if (lastChild) {
+		lastChildStyles = window.getComputedStyle(lastChild);
+	}
 
 	let returnValue = 0;
 
@@ -15,8 +24,12 @@ export default function (element, innerElement) {
 	returnValue += Number(innerStyles.marginBottom.replace('px', ''));
 	returnValue += Number(innerStyles.height.replace('px', ''));
 
-	returnValue += Number(firstChildStyles.marginTop.replace('px', ''));
-	returnValue += Number(lastChildStyles.marginBottom.replace('px', ''));
+	if (firstChild) {
+		returnValue += Number(firstChildStyles.marginTop.replace('px', ''));
+	}
+	if (lastChild) {
+		returnValue += Number(lastChildStyles.marginBottom.replace('px', ''));
+	}
 
 	return returnValue;
 }

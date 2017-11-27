@@ -1,4 +1,5 @@
 import anime from 'animejs';
+import SkyScroll from 'SkyScroll';
 
 export default function (target, collapsed, autoHeight) {
 	const duration = 500;
@@ -11,6 +12,8 @@ export default function (target, collapsed, autoHeight) {
 			if (!self.reversed) {
 				target.removeAttribute('style');
 			}
+
+			SkyScroll.recalculate();
 
 			self.began = false;
 			self.completed = false;

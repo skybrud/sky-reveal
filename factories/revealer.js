@@ -1,21 +1,20 @@
-import SkyWindow from 'sky-window';
 import heightSummation from './heightCalculator';
 import animeInstance from './animeInstance';
 
 export default (target) => {
 	const innerTarget = target.querySelector('.inner');
 	const collapsed = window.getComputedStyle(target).minHeight || 0;
-	let autoHeight = heightSummation(target, innerTarget);
+	let anim = animeInstance(target, collapsed, heightSummation(target, innerTarget));
 
-	let anim = animeInstance(target, collapsed, autoHeight);
-
-	SkyWindow.resize.subscribe(() => {
-		autoHeight = heightSummation(target, innerTarget);
-		anim = animeInstance(target, collapsed, autoHeight);
-	});
+	const reInstantiate = () => {
+		anim = animeInstance(target, collapsed, heightSummation(target, innerTarget));
+	};
 
 	const open = () => {
 		if (anim.reversed) {
+			if (anim.animations[0].tweens[0].value[1] !== heightSummation(target, innerTarget)) {
+				reInstantiate();
+			}
 			anim.play();
 			anim.reverse();
 		}
