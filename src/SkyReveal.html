@@ -1,8 +1,12 @@
 <div
+	ref="main"
 	:class="['sky-reveal', {closed: !showContent}]"
 	:aria-expanded="ariaExpanded"
 >
-	<div class="inner">
+	<div
+		ref="inner"
+		class="inner"
+	>
 		<slot />
 	</div>
 </div>

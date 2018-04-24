@@ -2,6 +2,7 @@
 import Revealer from './factories/revealer';
 
 export default {
+	name: 'SkyReveal',
 	props: {
 		revealId: {
 			type: [String, Number],
@@ -46,7 +47,7 @@ export default {
 		},
 	},
 	mounted() {
-		this.revealer = Revealer(this.$el);
+		this.revealer = Revealer(this.$refs.main, this.$refs.inner);
 
 		// If open from start
 		if (this.showContent) {
@@ -72,4 +73,4 @@ export default {
 </script>
 
 <template src="./SkyReveal.html"></template>
-<style src="./SkyReveal.scss" scoped></style>
+<style src="./SkyReveal.scss"></style>

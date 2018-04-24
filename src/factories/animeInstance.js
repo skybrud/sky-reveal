@@ -1,5 +1,5 @@
 import anime from 'animejs';
-import SkyScroll from 'SkyScroll';
+import SkyScroll from 'sky-scroll';
 
 export default function (target, collapsed, autoHeight) {
 	const duration = 500;

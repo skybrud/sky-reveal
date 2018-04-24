@@ -1,9 +1,9 @@
-<div
+<button
 	@click="toggle"
 	:class="['sky-reveal-trigger', {open: isOpen}]"
 >
 	<slot name="svg" />
-	<slot name="svg-append" />
+	<slot name="svg-prepend" />
 	<slot
 		name="open"
 		v-if="!isOpen"
@@ -12,5 +12,5 @@
 		name="closed"
 		v-else
 	/>
-	<slot name="svg-prepend" />
-</div>
+	<slot name="svg-append" />
+</button>

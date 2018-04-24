@@ -1,5 +1,6 @@
 <script>
 export default {
+	name: 'SkyRevealTrigger',
 	props: {
 		revealId: {
 			type: [String, Number],
@@ -14,7 +15,8 @@ export default {
 	},
 	computed: {
 		isOpen() {
-			return this.$store.getters['SkyReveal/revealStates'](this.revealId);
+			const getterFn = this.$store.getters['SkyReveal/revealStates'];
+			return getterFn && getterFn(this.revealId);
 		},
 	},
 	methods: {
@@ -22,7 +24,7 @@ export default {
 			this.$store.dispatch('SkyReveal/toggle', this.revealId);
 		},
 	},
-	mounted() {
+	created() {
 		const payload = {};
 		payload[this.revealId] = false;
 		this.$store.commit('SkyReveal/REGISTER', payload);
@@ -33,4 +35,4 @@ export default {
 };
 </script>
 
-<template src="./SkyRevealTrigger.html"></template>
+<template src="./SkyRevealTrigger.html" />

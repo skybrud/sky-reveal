@@ -1,0 +1,20 @@
+.sky-reveal {
+	position: relative;
+	overflow: hidden;
+
+	.inner {
+		:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
+.sky-reveal-trigger {
+	display: inline-flex;
+	align-items: center;
+	padding: 0;
+	background: none;
+	border: 0;
+	font-size: inherit;
+	outline: none;
+}
