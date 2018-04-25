@@ -17,14 +17,14 @@
   },
   "devDependencies": {
 	"np": "*",
-	"vue": "^2.5.0"
+	"vue": "^2.5.0",
+	"sky-build-setup": "../sky-build-setup/"
   },
   "peerDependencies": {
     "vue": "^2.5.0"
   },
   "dependencies": {
     "animejs": "^2.2.0",
-    "sky-build-setup": "../sky-build-setup/",
     "sky-scroll": "https://github.com/skybrud/sky-scroll.git"
   }
 }

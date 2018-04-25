@@ -27,12 +27,6 @@ export default {
 		},
 	},
 	created() {
-		console.log('test', this.$store.state.SkyReveal);
-		if (!this.$store.state.SkyReveal) {
-			console.log('SkyReveal missing in store');
-			this.$store.registerModule('SkyReveal', store, { preserveState: true });
-		}
-
 		const payload = {};
 		payload[this.revealId] = false;
 		this.$store.commit('SkyReveal/REGISTER', payload);

@@ -861,7 +861,6 @@ exports.default = store;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.SkyRevealTrigger = exports.SkyReveal = undefined;
 
 var _assign = __webpack_require__(32);
 
@@ -886,26 +885,28 @@ var defaults = {
 	store: null
 };
 
-exports.SkyReveal = _SkyReveal2.default;
-exports.SkyRevealTrigger = _SkyRevealTrigger2.default;
 exports.default = {
 	install: function install(Vue, options) {
 		var _Object$assign = (0, _assign2.default)({}, defaults, options),
 		    registerComponents = _Object$assign.registerComponents,
 		    store = _Object$assign.store;
 
+		console.log('install', options, registerComponents, store);
 		if (registerComponents) {
 			Vue.component(_SkyReveal2.default.name, _SkyReveal2.default);
 
 			if (store) {
-				store.registerModule(_SkyReveal2.default.name, _store2.default, { preserveState: true });
+				store.registerModule(_SkyReveal2.default.name, _store2.default);
 
 				Vue.component(_SkyRevealTrigger2.default.name, _SkyRevealTrigger2.default);
 			} else if (process.env.NODE_ENV !== 'production') {
 				console.warn('[SkyRevealTrigger] Not installed. Provide a vuex store, ie.: Vue.use(SkyReveal, { store: myStore })');
 			}
 		}
-	}
+	},
+
+	SkyReveal: _SkyReveal2.default,
+	SkyRevealTrigger: _SkyRevealTrigger2.default
 };
 
 /***/ }),
@@ -2417,12 +2418,6 @@ exports.default = {
 		}
 	},
 	created: function created() {
-		console.log('test', this.$store.state.SkyReveal);
-		if (!this.$store.state.SkyReveal) {
-			console.log('SkyReveal missing in store');
-			this.$store.registerModule('SkyReveal', _store2.default, { preserveState: true });
-		}
-
 		var payload = {};
 		payload[this.revealId] = false;
 		this.$store.commit('SkyReveal/REGISTER', payload);
