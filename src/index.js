@@ -16,18 +16,19 @@ export default {
 	install(Vue, options) {
 		const { registerComponents, store } = Object.assign({}, defaults, options);
 
-		if (store) {
-			store.registerModule(SkyReveal.name, SkyRevealStore);
+		if (registerComponents) {
+			// Main component
+			Vue.component(SkyReveal.name, SkyReveal);
 
-			if (registerComponents) {
-				// Main component
-				Vue.component(SkyReveal.name, SkyReveal);
+			if (store) {
+				store.registerModule(SkyReveal.name, SkyRevealStore, { preserveState: true });
 
 				// Sub component(s)
 				Vue.component(SkyRevealTrigger.name, SkyRevealTrigger);
+
+			} else if (process.env.NODE_ENV !== 'production') {
+				console.warn('[SkyRevealTrigger] Not installed. Provide a vuex store, ie.: Vue.use(SkyReveal, { store: myStore })');
 			}
-		} else if (process.env.NODE_ENV !== 'production') {
-			console.warn('[SkyReveal] Not installed. Provide a vuex store, ie.: Vue.plugin(SkyReveal, { store: myStore })');
 		}
 	},
 };
