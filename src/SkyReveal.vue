@@ -1,73 +1,62 @@
 <script>
 import Revealer from './factories/revealer';
+import EventBus from './EventBus';
 
 export default {
 	name: 'SkyReveal',
 	props: {
-		revealId: {
-			type: [String, Number],
-			default: null,
-		},
-		open: {
-			type: Boolean,
-			default: false,
-		},
+		revealId: [String, Number],
+		open: Boolean,
 	},
 	data() {
 		return {
 			revealer: null,
 			activeToggle: false,
+			isOpen: false,
 		};
 	},
 	computed: {
-		revealStates() {
-			return this.$store.getters['SkyReveal/revealStates'];
-		},
 		ariaExpanded() {
 			/**
 			 * Needs to stringify ariaExpanded bool to avoid ariaExpanded
 			 * being removed by VueJs
 			 **/
-			if (this.revealId && this.revealStates) {
-				return `${this.revealStates(this.revealId)}`;
-			} else if (!this.revealId) {
-				return `${this.open}`;
-			}
-
-			return null;
+			return `${this.isOpen}`;
 		},
-		showContent() {
-			if (this.revealId && this.revealStates) {
-				return this.revealStates(this.revealId);
-			} else if (!this.revealId) {
-				return this.open;
-			}
-
-			return null;
+	},
+	watch: {
+		open(val) {
+			this.isOpen = val;
 		},
+	},
+	created() {
+		if (this.revealId !== undefined) {
+			EventBus.$on('toggle', this.toggledByTrigger);
+		} else if (this.open !== undefined) {
+			this.isOpen = this.open;
+		} else {
+			console.error('SkyReveal must have either "open" or "revealId" attribute!');
+		}
 	},
 	mounted() {
 		this.revealer = Revealer(this.$refs.main, this.$refs.inner);
 
 		// If open from start
-		if (this.showContent) {
+		if (this.isOpen) {
 			this.revealer.open();
 		}
-
-		/*
-			nextTick is for avoiding runnning this.toggle() in update hook
-			the first time around.
-		*/
-		this.$nextTick(() => {
-			this.activeToggle = true;
-		});
 	},
 	updated() {
-		if (this.activeToggle) {
-			this.showContent
-				? this.revealer.open()
-				: this.revealer.close();
-		}
+		this.isOpen
+			? this.revealer.open()
+			: this.revealer.close();
+	},
+	methods: {
+		toggledByTrigger(data) {
+			if (this.revealId === data.id) {
+				this.isOpen = data.isOpen;
+			}
+		},
 	},
 };
 </script>

@@ -1,5 +1,5 @@
 <script>
-import store from './store/';
+import EventBus from './EventBus';
 
 export default {
 	name: 'SkyRevealTrigger',
@@ -7,32 +7,25 @@ export default {
 		revealId: {
 			type: [String, Number],
 			required: true,
-			validator(value) {
-				return Boolean(value);
-			},
 		},
 	},
 	data() {
-		return {};
+		return {
+			isOpen: false,
+		};
 	},
-	computed: {
-		isOpen() {
-			const getterFn = this.$store.getters['SkyReveal/revealStates'];
-			return getterFn && getterFn(this.revealId);
-		},
+	created() {
+		EventBus.register({ id: this.revealId, isOpen: this.isOpen });
+	},
+	beforeDestroy() {
+		EventBus.unregister(this.revealId);
 	},
 	methods: {
 		toggle() {
-			this.$store.dispatch('SkyReveal/toggle', this.revealId);
+			this.isOpen = !this.isOpen;
+
+			EventBus.$emit('toggle', { id: this.revealId, isOpen: this.isOpen });
 		},
-	},
-	created() {
-		const payload = {};
-		payload[this.revealId] = false;
-		this.$store.commit('SkyReveal/REGISTER', payload);
-	},
-	beforeDestroy() {
-		this.$store.commit('SkyReveal/UNREGISTER', this.revealId);
 	},
 };
 </script>
