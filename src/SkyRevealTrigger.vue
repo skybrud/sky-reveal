@@ -1,5 +1,5 @@
 <script>
-import EventBus from './EventBus';
+import SkyRevealStore from './SkyRevealStore';
 
 export default {
 	name: 'SkyRevealTrigger',
@@ -15,16 +15,16 @@ export default {
 		};
 	},
 	created() {
-		EventBus.register({ id: this.revealId, isOpen: this.isOpen });
+		SkyRevealStore.register({ id: this.revealId, isOpen: this.isOpen });
 	},
 	beforeDestroy() {
-		EventBus.unregister(this.revealId);
+		SkyRevealStore.unregister(this.revealId);
 	},
 	methods: {
 		toggle() {
 			this.isOpen = !this.isOpen;
 
-			EventBus.$emit('toggle', { id: this.revealId, isOpen: this.isOpen });
+			SkyRevealStore.$emit('toggle', { id: this.revealId, isOpen: this.isOpen });
 		},
 	},
 };

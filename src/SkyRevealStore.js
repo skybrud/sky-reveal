@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-const EventBus = new Vue({
+const SkyRevealStore = new Vue({
 	data() {
 		return {
 			states: {},
@@ -11,6 +11,9 @@ const EventBus = new Vue({
 			this.states[id] === undefined
 				? console.warn(`[SkyReveal] The following id is not registred: ${id}`)
 				: this.states[id] = isOpen;
+		});
+		this.$on('heightChanged', () => {
+			this.$emit('updated');
 		});
 	},
 	methods: {
@@ -26,4 +29,4 @@ const EventBus = new Vue({
 	},
 });
 
-export default EventBus;
+export default SkyRevealStore;

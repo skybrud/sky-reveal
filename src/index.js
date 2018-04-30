@@ -1,5 +1,6 @@
 import SkyReveal from './SkyReveal.vue';
 import SkyRevealTrigger from './SkyRevealTrigger.vue';
+import SkyRevealStore from './SkyRevealStore';
 
 const defaults = {
 	registerComponents: true,
@@ -8,6 +9,7 @@ const defaults = {
 export {
 	SkyReveal,
 	SkyRevealTrigger,
+	SkyRevealStore
 };
 
 export default {

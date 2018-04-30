@@ -1,5 +1,5 @@
 import anime from 'animejs';
-import SkyScroll from 'sky-scroll';
+import SkyRevealStore from '../SkyRevealStore.js';
 
 export default function (target, collapsed, autoHeight) {
 	const duration = 500;
@@ -13,7 +13,7 @@ export default function (target, collapsed, autoHeight) {
 				target.removeAttribute('style');
 			}
 
-			SkyScroll.recalculate();
+			SkyRevealStore.$emit('heightChanged');
 
 			self.began = false;
 			self.completed = false;

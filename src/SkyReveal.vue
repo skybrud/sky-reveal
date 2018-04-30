@@ -1,6 +1,6 @@
 <script>
 import Revealer from './factories/revealer';
-import EventBus from './EventBus';
+import SkyRevealStore from './SkyRevealStore';
 
 export default {
 	name: 'SkyReveal',
@@ -31,7 +31,7 @@ export default {
 	},
 	created() {
 		if (this.revealId !== undefined) {
-			EventBus.$on('toggle', this.toggledByTrigger);
+			SkyRevealStore.$on('toggle', this.toggledByTrigger);
 		} else if (this.open !== undefined) {
 			this.isOpen = this.open;
 		} else {
