@@ -7,6 +7,13 @@
 		ref="inner"
 		class="inner"
 	>
-		<slot />
+		<transition
+			name="sky-reveal-anim"
+			:duration="500"
+		>
+			<div v-if="isOpen">
+				<slot />
+			</div>
+		</transition>
 	</div>
 </div>
