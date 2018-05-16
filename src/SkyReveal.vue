@@ -7,6 +7,10 @@ export default {
 	props: {
 		revealId: [String, Number],
 		open: Boolean,
+		duration: {
+			type: Number,
+			default: 500,
+		},
 	},
 	data() {
 		return {
@@ -39,7 +43,7 @@ export default {
 		}
 	},
 	mounted() {
-		this.revealer = Revealer(this.$refs.main, this.$refs.inner);
+		this.revealer = Revealer(this.$refs.main, this.$refs.inner, this.duration);
 
 		// If open from start
 		if (this.isOpen) {

@@ -1,9 +1,7 @@
 import anime from 'animejs';
 import SkyRevealStore from '../SkyRevealStore.js';
 
-export default function (target, collapsed, autoHeight) {
-	const duration = 500;
-
+export default function (target, collapsed, autoHeight, duration) {
 	return anime({
 		targets: target,
 		height: [collapsed, autoHeight],

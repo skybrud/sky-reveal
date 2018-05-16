@@ -24,10 +24,17 @@ Here you need to to use the attribute `reveal-id` with the same value on both `s
 
 The other way to use `sky-reveal` is as a sub component which are provided with a bool in the `open` attribute like this. This will open / close `sky-reveal`
 ``` html
-<sky-reveal v-bind:open="true | false">
+<sky-reveal :open="true | false">
     <p>
     Ullamco enim eiusmod nisi exercitation occaecat do culpa. Elit dolore nulla aliqua sunt. Ex id eu ea et quis ex pariatur veniam mollit amet laborum. Magna elit aute non est. Ullamco enim eiusmod nisi exercitation occaecat do culpa. Elit dolore nulla aliqua sunt. Ex id eu ea et quis ex pariatur veniam mollit amet laborum. Magna elit aute non est.
     </p>
+</sky-reveal>
+```
+
+By default `sky-reveal` animates with a duration om 500ms. You can change this via the `duration` attribute.
+``` html
+<sky-reveal :open="true | false" :duration="750">
+    ...
 </sky-reveal>
 ```
 
