@@ -17,11 +17,11 @@ const SkyRevealStore = new Vue({
 		});
 	},
 	methods: {
-		register({ id, isOpen}) {
+		register({ id, isOpen }) {
 			this.$set(this.states, id, isOpen);
 		},
 		unregister(id) {
-			this.$delete(this.states , id);
+			this.$delete(this.states, id);
 		},
 		getState(key) {
 			return this.states[key];
