@@ -3,7 +3,7 @@ import animeInstance from './animeInstance';
 
 export default (target, innerTarget, duration) => {
 	const isBrowser = typeof window !== 'undefined';
-	const collapsed = isBrowser && window.getComputedStyle(target).minHeight || 0;
+	const collapsed = (isBrowser && window.getComputedStyle(target).minHeight) || 0;
 	let anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration);
 
 	const reInstantiate = () => {

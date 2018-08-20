@@ -1,5 +1,5 @@
 import anime from 'animejs';
-import SkyRevealStore from '../SkyRevealStore.js';
+import SkyRevealStore from '../SkyRevealStore';
 
 export default function (target, collapsed, autoHeight, duration) {
 	return anime({
