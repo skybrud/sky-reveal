@@ -38,6 +38,19 @@ By default `sky-reveal` animates with a duration om 500ms. You can change this v
 </sky-reveal>
 ```
 
+Furthermore, `sky-reveal` emits a few callbacks you can utilize.
+``` html
+<sky-reveal
+    reveal-id="asd"
+    @open="onAnimationStartFn()"
+    @open-done="onAnimationEndFn()"
+    @close="onAnimationStartFn()"
+    @close-done="onAnimationEndFn()"
+>
+    ...
+</sky-reveal>
+```
+
 ## How it works
 `Sky-reveal` uses animeJs as animation engine which handles initial state and animations from and to height. If the animation is to open `sky-reveal` it calculate auto height in pixel and animate towards this value and on completion set `height: auto` which will make the container responsive.
 if closing it will use the computed property `min-height` on `.sky-reveal`.

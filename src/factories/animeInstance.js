@@ -2,7 +2,9 @@ import anime from 'animejs';
 import SkyRevealStore from '../SkyRevealStore';
 
 export default function (target, collapsed, autoHeight, duration) {
-	return anime({
+	let onComplete = () => {};
+
+	const anim = anime({
 		targets: target,
 		height: [collapsed, autoHeight],
 		direction: 'reverse',
@@ -12,6 +14,7 @@ export default function (target, collapsed, autoHeight, duration) {
 			}
 
 			SkyRevealStore.$emit('heightChanged');
+			onComplete();
 
 			self.began = false;
 			self.completed = false;
@@ -20,4 +23,23 @@ export default function (target, collapsed, autoHeight, duration) {
 		duration,
 		easing: 'easeInOutCubic',
 	});
+
+	return {
+		play() {
+			return new Promise((resolve) => {
+				onComplete = resolve;
+				anim.play();
+				anim.reverse();
+			});
+		},
+		get reversed() {
+			return anim.reversed;
+		},
+		get animations() {
+			return anim.animations;
+		},
+		get progress() {
+			return anim.progress;
+		},
+	};
 }

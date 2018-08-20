@@ -47,15 +47,29 @@ export default {
 
 		// If open from start
 		if (this.isOpen) {
-			this.revealer.open();
+			this.openRevealer();
 		}
 	},
 	updated() {
 		this.isOpen
-			? this.revealer.open()
-			: this.revealer.close();
+			? this.openRevealer()
+			: this.closeRevealer();
 	},
 	methods: {
+		openRevealer() {
+			this.$emit('open');
+			this.revealer.open()
+				.then(() => {
+					this.$emit('open-done');
+				});
+		},
+		closeRevealer() {
+			this.$emit('close');
+			this.revealer.close()
+				.then(() => {
+					this.$emit('close-done');
+				});
+		},
 		toggledByTrigger(data) {
 			if (this.revealId === data.id) {
 				this.isOpen = data.isOpen;

@@ -10,22 +10,26 @@ export default (target, innerTarget, duration) => {
 		anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration);
 	};
 
-	const open = () => {
+	const open = () => new Promise((resolve) => {
 		if (anim.reversed) {
 			if (anim.animations[0].tweens[0].value[1] !== heightSummation(target, innerTarget)) {
 				reInstantiate();
 			}
-			anim.play();
-			anim.reverse();
+			anim.play()
+				.then(resolve);
+		} else {
+			resolve();
 		}
-	};
+	});
 
-	const close = () => {
+	const close = () => new Promise((resolve) => {
 		if (!anim.reversed) {
-			anim.play();
-			anim.reverse();
+			anim.play()
+				.then(resolve);
+		} else {
+			resolve();
 		}
-	};
+	});
 
 	const toggle = () => {
 		anim.progress > 0
