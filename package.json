@@ -1,6 +1,6 @@
 {
   "name": "sky-reveal",
-  "version": "0.1.0",
+  "version": "0.2.0-0",
   "description": "Vue component for collapsing content",
   "main": "dist/skyreveal.min.js",
   "scripts": {
