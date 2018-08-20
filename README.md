@@ -1,10 +1,6 @@
 # sky-reveal
 > Simple js module that collapses content
 
-## Dependencies
-- [animeJs](https://github.com/juliangarnier/anime)
-- [Sky-window](https://github.com/skybrud/sky-window)
-
 ## Usage
 There are two ways to use `sky-reveal`. The first one is as a stand-alone module where you provide a toggle button (`sky-reveal-trigger`) for the content to be revealed.
 Here you need to to use the attribute `reveal-id` with the same value on both `sky-reveal` and `sky-reveal-trigger`
@@ -54,7 +50,6 @@ Furthermore, `sky-reveal` emits a few callbacks you can utilize.
 ## How it works
 `Sky-reveal` uses animeJs as animation engine which handles initial state and animations from and to height. If the animation is to open `sky-reveal` it calculate auto height in pixel and animate towards this value and on completion set `height: auto` which will make the container responsive.
 if closing it will use the computed property `min-height` on `.sky-reveal`.
-`Sky-window` handles resize listening by using RxJS and will on resize end update and recalculate animeJs instances.
 
 
 # Credits
