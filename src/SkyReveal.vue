@@ -17,6 +17,7 @@ export default {
 			revealer: null,
 			activeToggle: false,
 			isOpen: false,
+			revealed: false,
 		};
 	},
 	computed: {
@@ -57,18 +58,30 @@ export default {
 	},
 	methods: {
 		openRevealer() {
-			this.$emit('open');
-			this.revealer.open()
-				.then(() => {
-					this.$emit('open-done');
-				});
+			// Use this.revealed as a safeguard to prevent false triggers
+			// when revealer is already open
+			if (!this.revealed) {
+				this.revealed = true;
+
+				this.$emit('open');
+				this.revealer.open()
+					.then(() => {
+						this.$emit('open-done');
+					});
+			}
 		},
 		closeRevealer() {
-			this.$emit('close');
-			this.revealer.close()
-				.then(() => {
-					this.$emit('close-done');
-				});
+			// Use this.revealed as a safeguard to prevent false triggers
+			// when revealer is already closed
+			if (this.revealed) {
+				this.revealed = false;
+
+				this.$emit('close');
+				this.revealer.close()
+					.then(() => {
+						this.$emit('close-done');
+					});
+			}
 		},
 		toggledByTrigger(data) {
 			if (this.revealId === data.id) {
