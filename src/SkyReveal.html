@@ -1,6 +1,9 @@
 <div
 	ref="main"
-	:class="['sky-reveal', {closed: !isOpen}]"
+	:class="['sky-reveal', {
+		closed: !isOpen,
+		animating,
+	}]"
 	:aria-expanded="ariaExpanded"
 >
 	<div

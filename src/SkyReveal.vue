@@ -18,6 +18,7 @@ export default {
 			activeToggle: false,
 			isOpen: false,
 			revealed: false,
+			animating: false,
 		};
 	},
 	computed: {
@@ -62,10 +63,12 @@ export default {
 			// when revealer is already open
 			if (!this.revealed) {
 				this.revealed = true;
+				this.animating = true;
 
 				this.$emit('open');
 				this.revealer.open()
 					.then(() => {
+						this.animating = false;
 						this.$emit('open-done');
 					});
 			}
@@ -75,10 +78,12 @@ export default {
 			// when revealer is already closed
 			if (this.revealed) {
 				this.revealed = false;
+				this.animating = true;
 
 				this.$emit('close');
 				this.revealer.close()
 					.then(() => {
+						this.animating = false;
 						this.$emit('close-done');
 					});
 			}

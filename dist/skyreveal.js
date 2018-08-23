@@ -1396,7 +1396,8 @@ exports.default = {
 			revealer: null,
 			activeToggle: false,
 			isOpen: false,
-			revealed: false
+			revealed: false,
+			animating: false
 		};
 	},
 
@@ -1436,9 +1437,11 @@ exports.default = {
 
 			if (!this.revealed) {
 				this.revealed = true;
+				this.animating = true;
 
 				this.$emit('open');
 				this.revealer.open().then(function () {
+					_this.animating = false;
 					_this.$emit('open-done');
 				});
 			}
@@ -1448,9 +1451,11 @@ exports.default = {
 
 			if (this.revealed) {
 				this.revealed = false;
+				this.animating = true;
 
 				this.$emit('close');
 				this.revealer.close().then(function () {
+					_this2.animating = false;
 					_this2.$emit('close-done');
 				});
 			}
@@ -10576,7 +10581,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('div', {
     ref: "main",
     class: ['sky-reveal', {
-      closed: !_vm.isOpen
+      closed: !_vm.isOpen,
+      animating: _vm.animating,
     }],
     attrs: {
       "aria-expanded": _vm.ariaExpanded
