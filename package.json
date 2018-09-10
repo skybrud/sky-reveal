@@ -4,8 +4,7 @@
 	"description": "Vue component for grouped foldable content",
 	"main": "./dist/sky-reveal.ssr.js",
 	"module": "./dist/sky-reveal.esm.js",
-	"browser": "./dist/sky-reveal.js",
-	"unpkg": "./dist/sky-reveal.js",
+	"browser": "./dist/sky-reveal.esm.js",
 	"scripts": {
 		"dist": "yarn rimraf dist && yarn run build",
 		"build": "yarn rollup --config rollup.config.js --environment BUILD:production"
@@ -17,8 +16,7 @@
 		"url": "https://github.com/skybrud/sky-reveal.git"
 	},
 	"dependencies": {
-		"animejs": "^2.2.0",
-		"vue-bus": "^1.1.0"
+		"animejs": "^2.2.0"
 	},
 	"devDependencies": {
 		"sky-build-setup": "https://github.com/skybrud/sky-build-setup.git"

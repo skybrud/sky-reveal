@@ -696,10 +696,6 @@ uniq@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/uniq/-/uniq-1.0.1.tgz#b31c5ae8254844a3a8281541ce2b04b865a734ff"
 
-vue-bus@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/vue-bus/-/vue-bus-1.1.0.tgz#803c53ced328a8ce01c95bfb72bf9d623d6df5a7"
-
 vue-template-compiler@^2.5.17:
   version "2.5.17"
   resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.5.17.tgz#52a4a078c327deb937482a509ae85c06f346c3cb"
