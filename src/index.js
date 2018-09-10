@@ -9,19 +9,18 @@ const defaults = {
 export {
 	SkyReveal,
 	SkyRevealTrigger,
-	SkyRevealStore
 };
 
-export default {
-	install(Vue, options) {
-		const { registerComponents } = Object.assign({}, defaults, options);
+export default function install(Vue, options) {
+	const { registerComponents } = Object.assign({}, defaults, options);
 
-		if (registerComponents) {
-			// Main component
-			Vue.component(SkyReveal.name, SkyReveal);
+	if (registerComponents) {
+		Vue.use(SkyRevealStore);
 
-			// Sub component(s)
-			Vue.component(SkyRevealTrigger.name, SkyRevealTrigger);
-		}
-	},
+		// Main component
+		Vue.component(SkyReveal.name, SkyReveal);
+
+		// Sub component(s)
+		Vue.component(SkyRevealTrigger.name, SkyRevealTrigger);
+	}
 };

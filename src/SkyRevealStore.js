@@ -1,32 +1,32 @@
-import Vue from 'vue';
-
-const SkyRevealStore = new Vue({
-	data() {
-		return {
-			states: {},
-		};
-	},
-	created() {
-		this.$on('toggle', ({ id, isOpen }) => {
-			this.states[id] === undefined
-				? console.warn(`[SkyReveal] The following id is not registred: ${id}`)
-				: this.states[id] = isOpen;
-		});
-		this.$on('heightChanged', () => {
-			this.$emit('updated');
-		});
-	},
-	methods: {
-		register({ id, isOpen }) {
-			this.$set(this.states, id, isOpen);
+function SkyRevealStore(Vue) {
+	return new Vue({
+		data() {
+			return {
+				states: {},
+			};
 		},
-		unregister(id) {
-			this.$delete(this.states, id);
+		created() {
+			this.$on('toggle', ({ id, isOpen }) => {
+				this.states[id] === undefined
+					? console.warn(`[SkyReveal] The following id is not registred: ${id}`)
+					: this.states[id] = isOpen;
+			});
+			this.$on('heightChanged', () => {
+				this.$emit('updated');
+			});
 		},
-		getState(key) {
-			return this.states[key];
-		},
-	},
-});
+		methods: {
+			register({ id, isOpen }) {
+				this.$set(this.states, id, isOpen);
+			},
+			unregister(id) {
+				this.$delete(this.states, id);
+			},
+			getState(key) {
+				return this.states[key];
+			},
+		}
+	});
+}
 
 export default SkyRevealStore;
