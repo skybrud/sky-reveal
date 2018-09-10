@@ -1,6 +1,6 @@
 <script>
 import Revealer from './factories/revealer';
-import SkyRevealStore from './SkyRevealStore';
+// import SkyRevealStore from './SkyRevealStore';
 
 export default {
 	name: 'SkyReveal',

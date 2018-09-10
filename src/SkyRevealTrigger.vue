@@ -1,5 +1,5 @@
 <script>
-import SkyRevealStore from './SkyRevealStore';
+// import SkyRevealStore from './SkyRevealStore';
 
 export default {
 	name: 'SkyRevealTrigger',
