@@ -1,6 +1,6 @@
 {
 	"name": "sky-reveal",
-	"version": "0.3.0-0",
+	"version": "0.4.0-0",
 	"description": "Vue component for grouped foldable content",
 	"main": "./dist/sky-accordion.ssr.js",
 	"module": "./dist/sky-accordion.esm.js",
