@@ -2,10 +2,10 @@
 	"name": "sky-reveal",
 	"version": "0.4.0-1",
 	"description": "Vue component for grouped foldable content",
-	"main": "./dist/sky-accordion.ssr.js",
-	"module": "./dist/sky-accordion.esm.js",
-	"browser": "./dist/sky-accordion.js",
-	"unpkg": "./dist/sky-accordion.js",
+	"main": "./dist/sky-reveal.ssr.js",
+	"module": "./dist/sky-reveal.esm.js",
+	"browser": "./dist/sky-reveal.js",
+	"unpkg": "./dist/sky-reveal.js",
 	"scripts": {
 		"dist": "yarn rimraf dist && yarn run build",
 		"build": "yarn rollup --config rollup.config.js --environment BUILD:production"
