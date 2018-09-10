@@ -46,7 +46,7 @@ function heightSummation (element, innerElement) {
 	return returnValue;
 }
 
-function SkyRevealStore(Vue) {
+function SkyRevealStore$1(Vue) {
 	return new Vue({
 		data() {
 			return {
@@ -89,7 +89,7 @@ function animeInstance (target, collapsed, autoHeight, duration) {
 				target.removeAttribute('style');
 			}
 
-			SkyRevealStore.$emit('heightChanged');
+			SkyRevealStore$1.$emit('heightChanged');
 			onComplete();
 
 			self.began = false;
@@ -162,6 +162,8 @@ var Revealer = (target, innerTarget, duration) => {
 		toggle,
 	};
 };
+
+// import SkyRevealStore from './SkyRevealStore';
 
 var script = {
 	name: 'SkyReveal',
@@ -270,13 +272,13 @@ var __vue_staticRenderFns__ = [];
   /* style */
   const __vue_inject_styles__ = function (inject) {
     if (!inject) return
-    inject("data-v-1192fbc0_0", { source: "\n.sky-reveal{position:relative;overflow:hidden\n}\n.sky-reveal-trigger{display:inline-flex;align-items:center;padding:0;background:0 0;border:0;font-size:inherit;outline:0\n}", map: undefined, media: undefined });
+    inject("data-v-04395fca_0", { source: "\n.sky-reveal{position:relative;overflow:hidden\n}\n.sky-reveal-trigger{display:inline-flex;align-items:center;padding:0;background:0 0;border:0;font-size:inherit;outline:0\n}", map: undefined, media: undefined });
 
   };
   /* scoped */
   const __vue_scope_id__ = undefined;
   /* module identifier */
-  const __vue_module_identifier__ = "data-v-1192fbc0";
+  const __vue_module_identifier__ = "data-v-04395fca";
   /* functional template */
   const __vue_is_functional_template__ = false;
   /* component normalizer */
@@ -401,6 +403,8 @@ var __vue_staticRenderFns__ = [];
     __vue_create_injector_ssr__
   );
 
+// import SkyRevealStore from './SkyRevealStore';
+
 var script$1 = {
 	name: 'SkyRevealTrigger',
 	props: {
@@ -441,7 +445,7 @@ var __vue_staticRenderFns__$1 = [];
   /* scoped */
   const __vue_scope_id__$1 = undefined;
   /* module identifier */
-  const __vue_module_identifier__$1 = "data-v-b6efa4a6";
+  const __vue_module_identifier__$1 = "data-v-7a9cb8d7";
   /* functional template */
   const __vue_is_functional_template__$1 = false;
   /* component normalizer */
@@ -492,7 +496,7 @@ function install(Vue, options) {
 	const { registerComponents } = Object.assign({}, defaults, options);
 
 	if (registerComponents) {
-		Vue.use(SkyRevealStore);
+		Vue.use(SkyRevealStore$1);
 
 		// Main component
 		Vue.component(SkyReveal.name, SkyReveal);

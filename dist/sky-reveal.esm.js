@@ -40,7 +40,7 @@ function heightSummation (element, innerElement) {
 	return returnValue;
 }
 
-function SkyRevealStore(Vue) {
+function SkyRevealStore$1(Vue) {
 	return new Vue({
 		data() {
 			return {
@@ -83,7 +83,7 @@ function animeInstance (target, collapsed, autoHeight, duration) {
 				target.removeAttribute('style');
 			}
 
-			SkyRevealStore.$emit('heightChanged');
+			SkyRevealStore$1.$emit('heightChanged');
 			onComplete();
 
 			self.began = false;
@@ -156,6 +156,8 @@ var Revealer = (target, innerTarget, duration) => {
 		toggle,
 	};
 };
+
+// import SkyRevealStore from './SkyRevealStore';
 
 var script = {
 	name: 'SkyReveal',
@@ -264,7 +266,7 @@ var __vue_staticRenderFns__ = [];
   /* style */
   const __vue_inject_styles__ = function (inject) {
     if (!inject) return
-    inject("data-v-1192fbc0_0", { source: "\n.sky-reveal{position:relative;overflow:hidden\n}\n.sky-reveal-trigger{display:inline-flex;align-items:center;padding:0;background:0 0;border:0;font-size:inherit;outline:0\n}", map: undefined, media: undefined });
+    inject("data-v-04395fca_0", { source: "\n.sky-reveal{position:relative;overflow:hidden\n}\n.sky-reveal-trigger{display:inline-flex;align-items:center;padding:0;background:0 0;border:0;font-size:inherit;outline:0\n}", map: undefined, media: undefined });
 
   };
   /* scoped */
@@ -403,6 +405,8 @@ var __vue_staticRenderFns__ = [];
     undefined
   );
 
+// import SkyRevealStore from './SkyRevealStore';
+
 var script$1 = {
 	name: 'SkyRevealTrigger',
 	props: {
@@ -494,7 +498,7 @@ function install(Vue, options) {
 	const { registerComponents } = Object.assign({}, defaults, options);
 
 	if (registerComponents) {
-		Vue.use(SkyRevealStore);
+		Vue.use(SkyRevealStore$1);
 
 		// Main component
 		Vue.component(SkyReveal.name, SkyReveal);
