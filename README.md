@@ -1,7 +1,28 @@
 # sky-reveal
 > Simple js module that collapses content
 
+## Installation
+```bash
+npm install sky-reveal
+```
+or
+```bash
+yarn add sky-revel
+```
+
 ## Usage
+Begin by importing and installing the SkyReveal Vue plugin:
+```js
+import Vue from 'vue';
+import SkyReveal from 'sky-reveal';
+
+// If you want to use the baseline scss add the following line
+import '${YOUR-PROJECT-ROOT-PATH}/node_modules/sky-reveal/src/SkyReveal.scss';
+
+Vue.use(SkyReveal);
+
+```
+
 There are two ways to use `sky-reveal`. The first one is as a stand-alone module where you provide a toggle button (`sky-reveal-trigger`) for the content to be revealed.
 Here you need to to use the attribute `reveal-id` with the same value on both `sky-reveal` and `sky-reveal-trigger`
 ``` html
