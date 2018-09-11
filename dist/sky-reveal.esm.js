@@ -40,38 +40,9 @@ function heightSummation (element, innerElement) {
 	return returnValue;
 }
 
-function SkyRevealStore$1(Vue) {
-	return new Vue({
-		data() {
-			return {
-				states: {},
-			};
-		},
-		created() {
-			this.$on('toggle', ({ id, isOpen }) => {
-				this.states[id] === undefined
-					? console.warn(`[SkyReveal] The following id is not registred: ${id}`)
-					: this.states[id] = isOpen;
-			});
-			this.$on('heightChanged', () => {
-				this.$emit('updated');
-			});
-		},
-		methods: {
-			register({ id, isOpen }) {
-				this.$set(this.states, id, isOpen);
-			},
-			unregister(id) {
-				this.$delete(this.states, id);
-			},
-			getState(key) {
-				return this.states[key];
-			},
-		}
-	});
-}
+// import SkyRevealStore from '../SkyRevealStore';
 
-function animeInstance (target, collapsed, autoHeight, duration) {
+function animeInstance (target, collapsed, autoHeight, duration, store) {
 	let onComplete = () => {};
 
 	const anim = anime({
@@ -83,7 +54,7 @@ function animeInstance (target, collapsed, autoHeight, duration) {
 				target.removeAttribute('style');
 			}
 
-			SkyRevealStore$1.$emit('heightChanged');
+			store.$emit('heightChanged');
 			onComplete();
 
 			self.began = false;
@@ -114,13 +85,13 @@ function animeInstance (target, collapsed, autoHeight, duration) {
 	};
 }
 
-var Revealer = (target, innerTarget, duration) => {
+var Revealer = (target, innerTarget, duration, store) => {
 	const isBrowser = typeof window !== 'undefined';
 	const collapsed = (isBrowser && window.getComputedStyle(target).minHeight) || 0;
-	let anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration);
+	let anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration, store);
 
 	const reInstantiate = () => {
-		anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration);
+		anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration, store);
 	};
 
 	const open = () => new Promise((resolve) => {
@@ -157,8 +128,6 @@ var Revealer = (target, innerTarget, duration) => {
 	};
 };
 
-// import SkyRevealStore from './SkyRevealStore';
-
 var script = {
 	name: 'SkyReveal',
 	props: {
@@ -194,7 +163,7 @@ var script = {
 	},
 	created() {
 		if (this.revealId !== undefined) {
-			SkyRevealStore.$on('toggle', this.toggledByTrigger);
+			this.$SkyRevealStore.$on('toggle', this.toggledByTrigger);
 		} else if (this.open !== undefined) {
 			this.isOpen = this.open;
 		} else {
@@ -202,7 +171,12 @@ var script = {
 		}
 	},
 	mounted() {
-		this.revealer = Revealer(this.$refs.main, this.$refs.inner, this.duration);
+		this.revealer = Revealer(
+			this.$refs.main,
+			this.$refs.inner,
+			this.duration,
+			this.$SkyRevealStore
+		);
 
 		// If open from start
 		if (this.isOpen) {
@@ -266,7 +240,7 @@ var __vue_staticRenderFns__ = [];
   /* style */
   const __vue_inject_styles__ = function (inject) {
     if (!inject) return
-    inject("data-v-04395fca_0", { source: "\n.sky-reveal{position:relative;overflow:hidden\n}\n.sky-reveal-trigger{display:inline-flex;align-items:center;padding:0;background:0 0;border:0;font-size:inherit;outline:0\n}", map: undefined, media: undefined });
+    inject("data-v-536e34f6_0", { source: "\n.sky-reveal{position:relative;overflow:hidden\n}\n.sky-reveal-trigger{display:inline-flex;align-items:center;padding:0;background:0 0;border:0;font-size:inherit;outline:0\n}", map: undefined, media: undefined });
 
   };
   /* scoped */
@@ -405,8 +379,6 @@ var __vue_staticRenderFns__ = [];
     undefined
   );
 
-// import SkyRevealStore from './SkyRevealStore';
-
 var script$1 = {
 	name: 'SkyRevealTrigger',
 	props: {
@@ -421,16 +393,16 @@ var script$1 = {
 		};
 	},
 	created() {
-		SkyRevealStore.register({ id: this.revealId, isOpen: this.isOpen });
+		this.$SkyRevealStore.register({ id: this.revealId, isOpen: this.isOpen });
 	},
 	beforeDestroy() {
-		SkyRevealStore.unregister(this.revealId);
+		this.$SkyRevealStore.unregister(this.revealId);
 	},
 	methods: {
 		toggle() {
 			this.isOpen = !this.isOpen;
 
-			SkyRevealStore.$emit('toggle', { id: this.revealId, isOpen: this.isOpen });
+			this.$SkyRevealStore.$emit('toggle', { id: this.revealId, isOpen: this.isOpen });
 		},
 	},
 };
@@ -490,6 +462,43 @@ var __vue_staticRenderFns__$1 = [];
     undefined
   );
 
+function SkyRevealStore(Vue) {
+	const instance = new Vue({
+		data() {
+			return {
+				states: {},
+			};
+		},
+		created() {
+			this.$on('toggle', ({ id, isOpen }) => {
+				this.states[id] === undefined
+					? console.warn(`[SkyReveal] The following id is not registred: ${id}`)
+					: this.states[id] = isOpen;
+			});
+			this.$on('heightChanged', () => {
+				this.$emit('updated');
+			});
+		},
+		methods: {
+			register({ id, isOpen }) {
+				this.$set(this.states, id, isOpen);
+			},
+			unregister(id) {
+				this.$delete(this.states, id);
+			},
+			getState(key) {
+				return this.states[key];
+			},
+		}
+	});
+
+	Object.defineProperty(Vue.prototype, '$SkyRevealStore', {
+		get() {
+			return instance
+		}
+	});
+}
+
 const defaults = {
 	registerComponents: true,
 };
@@ -498,7 +507,7 @@ function install(Vue, options) {
 	const { registerComponents } = Object.assign({}, defaults, options);
 
 	if (registerComponents) {
-		Vue.use(SkyRevealStore$1);
+		Vue.use(SkyRevealStore);
 
 		// Main component
 		Vue.component(SkyReveal.name, SkyReveal);

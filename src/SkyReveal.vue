@@ -1,6 +1,5 @@
 <script>
 import Revealer from './factories/revealer';
-// import SkyRevealStore from './SkyRevealStore';
 
 export default {
 	name: 'SkyReveal',
@@ -37,7 +36,7 @@ export default {
 	},
 	created() {
 		if (this.revealId !== undefined) {
-			SkyRevealStore.$on('toggle', this.toggledByTrigger);
+			this.$SkyRevealStore.$on('toggle', this.toggledByTrigger);
 		} else if (this.open !== undefined) {
 			this.isOpen = this.open;
 		} else {
@@ -45,7 +44,12 @@ export default {
 		}
 	},
 	mounted() {
-		this.revealer = Revealer(this.$refs.main, this.$refs.inner, this.duration);
+		this.revealer = Revealer(
+			this.$refs.main,
+			this.$refs.inner,
+			this.duration,
+			this.$SkyRevealStore
+		);
 
 		// If open from start
 		if (this.isOpen) {

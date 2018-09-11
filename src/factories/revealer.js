@@ -1,13 +1,13 @@
 import heightSummation from './heightCalculator';
 import animeInstance from './animeInstance';
 
-export default (target, innerTarget, duration) => {
+export default (target, innerTarget, duration, store) => {
 	const isBrowser = typeof window !== 'undefined';
 	const collapsed = (isBrowser && window.getComputedStyle(target).minHeight) || 0;
-	let anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration);
+	let anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration, store);
 
 	const reInstantiate = () => {
-		anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration);
+		anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration, store);
 	};
 
 	const open = () => new Promise((resolve) => {

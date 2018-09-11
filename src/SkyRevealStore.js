@@ -1,5 +1,5 @@
 function SkyRevealStore(Vue) {
-	return new Vue({
+	const instance = new Vue({
 		data() {
 			return {
 				states: {},
@@ -27,6 +27,12 @@ function SkyRevealStore(Vue) {
 			},
 		}
 	});
+
+	Object.defineProperty(Vue.prototype, '$SkyRevealStore', {
+		get() {
+			return instance
+		}
+	})
 }
 
 export default SkyRevealStore;
