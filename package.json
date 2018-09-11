@@ -16,7 +16,8 @@
 		"url": "https://github.com/skybrud/sky-reveal.git"
 	},
 	"dependencies": {
-		"animejs": "^2.2.0"
+		"animejs": "^2.2.0",
+		"vue": "^2.5.17"
 	},
 	"devDependencies": {
 		"sky-build-setup": "https://github.com/skybrud/sky-build-setup.git"

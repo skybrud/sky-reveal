@@ -4,7 +4,37 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
+var Vue = _interopDefault(require('vue'));
 var anime = _interopDefault(require('animejs'));
+
+const SkyRevealStore = new Vue({
+	data() {
+		return {
+			states: {},
+		};
+	},
+	created() {
+		this.$on('toggle', ({ id, isOpen }) => {
+			this.states[id] === undefined
+				? console.warn(`[SkyReveal] The following id is not registred: ${id}`)
+				: this.states[id] = isOpen;
+		});
+		this.$on('heightChanged', () => {
+			this.$emit('updated');
+		});
+	},
+	methods: {
+		register({ id, isOpen }) {
+			this.$set(this.states, id, isOpen);
+		},
+		unregister(id) {
+			this.$delete(this.states, id);
+		},
+		getState(key) {
+			return this.states[key];
+		},
+	},
+});
 
 function heightSummation (element, innerElement) {
 	const isBrowser = typeof window !== 'undefined';
@@ -46,9 +76,7 @@ function heightSummation (element, innerElement) {
 	return returnValue;
 }
 
-// import SkyRevealStore from '../SkyRevealStore';
-
-function animeInstance (target, collapsed, autoHeight, duration, store) {
+function animeInstance (target, collapsed, autoHeight, duration) {
 	let onComplete = () => {};
 
 	const anim = anime({
@@ -60,7 +88,7 @@ function animeInstance (target, collapsed, autoHeight, duration, store) {
 				target.removeAttribute('style');
 			}
 
-			store.$emit('heightChanged');
+			SkyRevealStore.$emit('heightChanged');
 			onComplete();
 
 			self.began = false;
@@ -91,13 +119,13 @@ function animeInstance (target, collapsed, autoHeight, duration, store) {
 	};
 }
 
-var Revealer = (target, innerTarget, duration, store) => {
+var Revealer = (target, innerTarget, duration) => {
 	const isBrowser = typeof window !== 'undefined';
 	const collapsed = (isBrowser && window.getComputedStyle(target).minHeight) || 0;
-	let anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration, store);
+	let anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration);
 
 	const reInstantiate = () => {
-		anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration, store);
+		anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration);
 	};
 
 	const open = () => new Promise((resolve) => {
@@ -169,7 +197,7 @@ var script = {
 	},
 	created() {
 		if (this.revealId !== undefined) {
-			this.$SkyRevealStore.$on('toggle', this.toggledByTrigger);
+			SkyRevealStore.$on('toggle', this.toggledByTrigger);
 		} else if (this.open !== undefined) {
 			this.isOpen = this.open;
 		} else {
@@ -181,7 +209,6 @@ var script = {
 			this.$refs.main,
 			this.$refs.inner,
 			this.duration,
-			this.$SkyRevealStore
 		);
 
 		// If open from start
@@ -246,13 +273,13 @@ var __vue_staticRenderFns__ = [];
   /* style */
   const __vue_inject_styles__ = function (inject) {
     if (!inject) return
-    inject("data-v-536e34f6_0", { source: "\n.sky-reveal{position:relative;overflow:hidden\n}\n.sky-reveal-trigger{display:inline-flex;align-items:center;padding:0;background:0 0;border:0;font-size:inherit;outline:0\n}", map: undefined, media: undefined });
+    inject("data-v-18677aaf_0", { source: "\n.sky-reveal{position:relative;overflow:hidden\n}\n.sky-reveal-trigger{display:inline-flex;align-items:center;padding:0;background:0 0;border:0;font-size:inherit;outline:0\n}", map: undefined, media: undefined });
 
   };
   /* scoped */
   const __vue_scope_id__ = undefined;
   /* module identifier */
-  const __vue_module_identifier__ = "data-v-536e34f6";
+  const __vue_module_identifier__ = "data-v-18677aaf";
   /* functional template */
   const __vue_is_functional_template__ = false;
   /* component normalizer */
@@ -391,16 +418,16 @@ var script$1 = {
 		};
 	},
 	created() {
-		this.$SkyRevealStore.register({ id: this.revealId, isOpen: this.isOpen });
+		SkyRevealStore.register({ id: this.revealId, isOpen: this.isOpen });
 	},
 	beforeDestroy() {
-		this.$SkyRevealStore.unregister(this.revealId);
+		SkyRevealStore.unregister(this.revealId);
 	},
 	methods: {
 		toggle() {
 			this.isOpen = !this.isOpen;
 
-			this.$SkyRevealStore.$emit('toggle', { id: this.revealId, isOpen: this.isOpen });
+			SkyRevealStore.$emit('toggle', { id: this.revealId, isOpen: this.isOpen });
 		},
 	},
 };
@@ -417,7 +444,7 @@ var __vue_staticRenderFns__$1 = [];
   /* scoped */
   const __vue_scope_id__$1 = undefined;
   /* module identifier */
-  const __vue_module_identifier__$1 = "data-v-ef77839c";
+  const __vue_module_identifier__$1 = "data-v-b6efa4a6";
   /* functional template */
   const __vue_is_functional_template__$1 = false;
   /* component normalizer */
@@ -460,61 +487,23 @@ var __vue_staticRenderFns__$1 = [];
     undefined
   );
 
-function SkyRevealStore(Vue) {
-	const instance = new Vue({
-		data() {
-			return {
-				states: {},
-			};
-		},
-		created() {
-			this.$on('toggle', ({ id, isOpen }) => {
-				this.states[id] === undefined
-					? console.warn(`[SkyReveal] The following id is not registred: ${id}`)
-					: this.states[id] = isOpen;
-			});
-			this.$on('heightChanged', () => {
-				this.$emit('updated');
-			});
-		},
-		methods: {
-			register({ id, isOpen }) {
-				this.$set(this.states, id, isOpen);
-			},
-			unregister(id) {
-				this.$delete(this.states, id);
-			},
-			getState(key) {
-				return this.states[key];
-			},
-		}
-	});
-
-	Object.defineProperty(Vue.prototype, '$SkyRevealStore', {
-		get() {
-			return instance
-		}
-	});
-}
-
 const defaults = {
 	registerComponents: true,
 };
 
-function install(Vue, options) {
+function install(Vue$$1, options) {
 	const { registerComponents } = Object.assign({}, defaults, options);
 
 	if (registerComponents) {
-		Vue.use(SkyRevealStore);
-
 		// Main component
-		Vue.component(SkyReveal.name, SkyReveal);
+		Vue$$1.component(SkyReveal.name, SkyReveal);
 
 		// Sub component(s)
-		Vue.component(SkyRevealTrigger.name, SkyRevealTrigger);
+		Vue$$1.component(SkyRevealTrigger.name, SkyRevealTrigger);
 	}
 }
 
 exports.SkyReveal = SkyReveal;
 exports.SkyRevealTrigger = SkyRevealTrigger;
+exports.SkyRevealStore = SkyRevealStore;
 exports.default = install;
