@@ -1,6 +1,4 @@
 <script>
-import SkyRevealStore from './SkyRevealStore';
-
 export default {
 	name: 'SkyRevealTrigger',
 	props: {
@@ -15,16 +13,16 @@ export default {
 		};
 	},
 	created() {
-		SkyRevealStore.register({ id: this.revealId, isOpen: this.isOpen });
+		this.$SkyReveal.register({ id: this.revealId, isOpen: this.isOpen });
 	},
 	beforeDestroy() {
-		SkyRevealStore.unregister(this.revealId);
+		this.$SkyReveal.unregister(this.revealId);
 	},
 	methods: {
 		toggle() {
 			this.isOpen = !this.isOpen;
 
-			SkyRevealStore.$emit('toggle', { id: this.revealId, isOpen: this.isOpen });
+			this.$SkyReveal.$emit('toggle', { id: this.revealId, isOpen: this.isOpen });
 		},
 	},
 };

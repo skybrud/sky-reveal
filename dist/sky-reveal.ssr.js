@@ -4,37 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
-var Vue = _interopDefault(require('vue'));
 var anime = _interopDefault(require('animejs'));
-
-const SkyRevealStore = new Vue({
-	data() {
-		return {
-			states: {},
-		};
-	},
-	created() {
-		this.$on('toggle', ({ id, isOpen }) => {
-			this.states[id] === undefined
-				? console.warn(`[SkyReveal] The following id is not registred: ${id}`)
-				: this.states[id] = isOpen;
-		});
-		this.$on('heightChanged', () => {
-			this.$emit('updated');
-		});
-	},
-	methods: {
-		register({ id, isOpen }) {
-			this.$set(this.states, id, isOpen);
-		},
-		unregister(id) {
-			this.$delete(this.states, id);
-		},
-		getState(key) {
-			return this.states[key];
-		},
-	},
-});
 
 function heightSummation (element, innerElement) {
 	const isBrowser = typeof window !== 'undefined';
@@ -76,7 +46,7 @@ function heightSummation (element, innerElement) {
 	return returnValue;
 }
 
-function animeInstance (target, collapsed, autoHeight, duration) {
+function animeInstance (target, collapsed, autoHeight, duration, storeRef) {
 	let onComplete = () => {};
 
 	const anim = anime({
@@ -88,7 +58,7 @@ function animeInstance (target, collapsed, autoHeight, duration) {
 				target.removeAttribute('style');
 			}
 
-			SkyRevealStore.$emit('heightChanged');
+			storeRef.$emit('heightChanged');
 			onComplete();
 
 			self.began = false;
@@ -119,13 +89,13 @@ function animeInstance (target, collapsed, autoHeight, duration) {
 	};
 }
 
-var Revealer = (target, innerTarget, duration) => {
+var Revealer = (target, innerTarget, duration, storeRef) => {
 	const isBrowser = typeof window !== 'undefined';
 	const collapsed = (isBrowser && window.getComputedStyle(target).minHeight) || 0;
-	let anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration);
+	let anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration, storeRef);
 
 	const reInstantiate = () => {
-		anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration);
+		anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration, storeRef);
 	};
 
 	const open = () => new Promise((resolve) => {
@@ -197,7 +167,7 @@ var script = {
 	},
 	created() {
 		if (this.revealId !== undefined) {
-			SkyRevealStore.$on('toggle', this.toggledByTrigger);
+			this.$SkyReveal.$on('toggle', this.toggledByTrigger);
 		} else if (this.open !== undefined) {
 			this.isOpen = this.open;
 		} else {
@@ -209,6 +179,7 @@ var script = {
 			this.$refs.main,
 			this.$refs.inner,
 			this.duration,
+			this.$SkyReveal,
 		);
 
 		// If open from start
@@ -273,13 +244,13 @@ var __vue_staticRenderFns__ = [];
   /* style */
   const __vue_inject_styles__ = function (inject) {
     if (!inject) return
-    inject("data-v-18677aaf_0", { source: "\n.sky-reveal{position:relative;overflow:hidden\n}\n.sky-reveal-trigger{display:inline-flex;align-items:center;padding:0;background:0 0;border:0;font-size:inherit;outline:0\n}", map: undefined, media: undefined });
+    inject("data-v-4cdb19c0_0", { source: "\n.sky-reveal{position:relative;overflow:hidden\n}\n.sky-reveal-trigger{display:inline-flex;align-items:center;padding:0;background:0 0;border:0;font-size:inherit;outline:0\n}", map: undefined, media: undefined });
 
   };
   /* scoped */
   const __vue_scope_id__ = undefined;
   /* module identifier */
-  const __vue_module_identifier__ = "data-v-18677aaf";
+  const __vue_module_identifier__ = "data-v-4cdb19c0";
   /* functional template */
   const __vue_is_functional_template__ = false;
   /* component normalizer */
@@ -418,16 +389,16 @@ var script$1 = {
 		};
 	},
 	created() {
-		SkyRevealStore.register({ id: this.revealId, isOpen: this.isOpen });
+		this.$SkyReveal.register({ id: this.revealId, isOpen: this.isOpen });
 	},
 	beforeDestroy() {
-		SkyRevealStore.unregister(this.revealId);
+		this.$SkyReveal.unregister(this.revealId);
 	},
 	methods: {
 		toggle() {
 			this.isOpen = !this.isOpen;
 
-			SkyRevealStore.$emit('toggle', { id: this.revealId, isOpen: this.isOpen });
+			this.$SkyReveal.$emit('toggle', { id: this.revealId, isOpen: this.isOpen });
 		},
 	},
 };
@@ -444,7 +415,7 @@ var __vue_staticRenderFns__$1 = [];
   /* scoped */
   const __vue_scope_id__$1 = undefined;
   /* module identifier */
-  const __vue_module_identifier__$1 = "data-v-b6efa4a6";
+  const __vue_module_identifier__$1 = "data-v-1314b02f";
   /* functional template */
   const __vue_is_functional_template__$1 = false;
   /* component normalizer */
@@ -487,19 +458,58 @@ var __vue_staticRenderFns__$1 = [];
     undefined
   );
 
+function SkyRevealStore(Vue) {
+	const instance = new Vue({
+		data() {
+			return {
+				states: {},
+			};
+		},
+		created() {
+			this.$on('toggle', ({ id, isOpen }) => {
+				this.states[id] === undefined
+					? console.warn(`[SkyReveal] The following id is not registred: ${id}`)
+					: this.states[id] = isOpen;
+			});
+			this.$on('heightChanged', () => {
+				this.$emit('updated');
+			});
+		},
+		methods: {
+			register({ id, isOpen }) {
+				this.$set(this.states, id, isOpen);
+			},
+			unregister(id) {
+				this.$delete(this.states, id);
+			},
+			getState(key) {
+				return this.states[key];
+			},
+		},
+	});
+
+	Object.defineProperty(Vue.prototype, '$SkyReveal', {
+		get() {
+			return instance
+		}
+	});
+}
+
 const defaults = {
 	registerComponents: true,
 };
 
-function install(Vue$$1, options) {
+function install(Vue, options) {
 	const { registerComponents } = Object.assign({}, defaults, options);
 
 	if (registerComponents) {
+		Vue.use(SkyRevealStore);
+
 		// Main component
-		Vue$$1.component(SkyReveal.name, SkyReveal);
+		Vue.component(SkyReveal.name, SkyReveal);
 
 		// Sub component(s)
-		Vue$$1.component(SkyRevealTrigger.name, SkyRevealTrigger);
+		Vue.component(SkyRevealTrigger.name, SkyRevealTrigger);
 	}
 }
 

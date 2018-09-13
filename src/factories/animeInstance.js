@@ -1,7 +1,6 @@
 import anime from 'animejs';
-import SkyRevealStore from '../SkyRevealStore';
 
-export default function (target, collapsed, autoHeight, duration) {
+export default function (target, collapsed, autoHeight, duration, storeRef) {
 	let onComplete = () => {};
 
 	const anim = anime({
@@ -13,7 +12,7 @@ export default function (target, collapsed, autoHeight, duration) {
 				target.removeAttribute('style');
 			}
 
-			SkyRevealStore.$emit('heightChanged');
+			storeRef.$emit('heightChanged');
 			onComplete();
 
 			self.began = false;
