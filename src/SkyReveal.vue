@@ -54,6 +54,8 @@ export default {
 		// If open from start
 		if (this.isOpen) {
 			this.openRevealer();
+		} else {
+			this.$refs.main.style.height = '0px';
 		}
 	},
 	updated() {
