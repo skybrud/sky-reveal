@@ -185,8 +185,6 @@ var script = {
 		// If open from start
 		if (this.isOpen) {
 			this.openRevealer();
-		} else {
-			this.$refs.main.style.height = '0px';
 		}
 	},
 	updated: function updated() {
@@ -243,7 +241,7 @@ var script = {
 var __vue_render__ = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"main",class:['sky-reveal', {
 		closed: !_vm.isOpen,
 		animating: _vm.animating,
-	}],attrs:{"aria-expanded":_vm.ariaExpanded}},[_vm._ssrNode("<div class=\"inner\">","</div>",[_c('transition',{attrs:{"name":"sky-reveal-anim","duration":500}},[(_vm.isOpen)?_c('div',[_vm._t("default")],2):_vm._e()])],1)])};
+	}],staticStyle:{"height":"0px"},attrs:{"aria-expanded":_vm.ariaExpanded}},[_vm._ssrNode("<div class=\"inner\">","</div>",[_c('transition',{attrs:{"name":"sky-reveal-anim","duration":500}},[(_vm.isOpen)?_c('div',[_vm._t("default")],2):_vm._e()])],1)])};
 var __vue_staticRenderFns__ = [];
 
   /* style */
@@ -251,7 +249,7 @@ var __vue_staticRenderFns__ = [];
   /* scoped */
   var __vue_scope_id__ = undefined;
   /* module identifier */
-  var __vue_module_identifier__ = "data-v-215d96ae";
+  var __vue_module_identifier__ = "data-v-4cdb19c0";
   /* functional template */
   var __vue_is_functional_template__ = false;
   /* component normalizer */
