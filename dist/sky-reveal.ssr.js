@@ -185,6 +185,8 @@ var script = {
 		// If open from start
 		if (this.isOpen) {
 			this.openRevealer();
+		} else {
+			this.$refs.main.style.height = '0px';
 		}
 	},
 	updated: function updated() {
@@ -237,7 +239,6 @@ var script = {
 
 /* script */
             var __vue_script__ = script;
-            
 /* template */
 var __vue_render__ = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"main",class:['sky-reveal', {
 		closed: !_vm.isOpen,
@@ -246,15 +247,11 @@ var __vue_render__ = function () {var _vm=this;var _h=_vm.$createElement;var _c=
 var __vue_staticRenderFns__ = [];
 
   /* style */
-  var __vue_inject_styles__ = function (inject) {
-    if (!inject) { return }
-    inject("data-v-4cdb19c0_0", { source: "\n.sky-reveal{position:relative;overflow:hidden\n}\n.sky-reveal-trigger{display:inline-flex;align-items:center;padding:0;background:0 0;border:0;font-size:inherit;outline:0\n}", map: undefined, media: undefined });
-
-  };
+  var __vue_inject_styles__ = undefined;
   /* scoped */
   var __vue_scope_id__ = undefined;
   /* module identifier */
-  var __vue_module_identifier__ = "data-v-4cdb19c0";
+  var __vue_module_identifier__ = "data-v-215d96ae";
   /* functional template */
   var __vue_is_functional_template__ = false;
   /* component normalizer */
@@ -278,99 +275,12 @@ var __vue_staticRenderFns__ = [];
 
     component._scopeId = scope;
 
-    {
-      var hook;
-      {
-        // In SSR.
-        hook = function(context) {
-          // 2.3 injection
-          context =
-            context || // cached call
-            (this.$vnode && this.$vnode.ssrContext) || // stateful
-            (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext); // functional
-          // 2.2 with runInNewContext: true
-          if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-            context = __VUE_SSR_CONTEXT__;
-          }
-          // inject component styles
-          if (style) {
-            style.call(this, createInjectorSSR(context));
-          }
-          // register component module identifier for async chunk inference
-          if (context && context._registeredComponents) {
-            context._registeredComponents.add(moduleIdentifier);
-          }
-        };
-        // used by ssr in case component is cached and beforeCreate
-        // never gets called
-        component._ssrRegister = hook;
-      }
-
-      if (hook !== undefined) {
-        if (component.functional) {
-          // register for functional component in vue file
-          var originalRender = component.render;
-          component.render = function renderWithStyleInjection(h, context) {
-            hook.call(context);
-            return originalRender(h, context)
-          };
-        } else {
-          // inject component registration as beforeCreate hook
-          var existing = component.beforeCreate;
-          component.beforeCreate = existing ? [].concat(existing, hook) : [hook];
-        }
-      }
-    }
-
     return component
   }
   /* style inject */
   
   /* style inject SSR */
-  function __vue_create_injector_ssr__(context) {
-    if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-      context = __VUE_SSR_CONTEXT__;
-    }
-
-    if (!context) { return function () {} }
-
-    if (!context.hasOwnProperty('styles')) {
-      Object.defineProperty(context, 'styles', {
-        enumerable: true,
-        get: function () { return context._styles; }
-      });
-      context._renderStyles = renderStyles;
-    }
-
-    function renderStyles(styles) {
-      var css = '';
-      for (var i = 0, list = styles; i < list.length; i += 1) {
-        var ref = list[i];
-        var ids = ref.ids;
-        var media = ref.media;
-        var parts = ref.parts;
-
-        css +=
-          '<style data-vue-ssr-id="' + ids.join(' ') + '"' + (media ? ' media="' + media + '"' : '') + '>'
-          + parts.join('\n') +
-          '</style>';
-      }
-
-      return css
-    }
-
-    return function addStyle(id, css) {
-      var group = css.media || 'default';
-      var style = context._styles[group] || (context._styles[group] = { ids: [], parts: [] });
-
-      if (!style.ids.includes(id)) {
-        style.media = css.media;
-        style.ids.push(id);
-        var code = css.source;
-        style.parts.push(code);
-      }
-    }
-  }
+  
 
   
   var SkyReveal = __vue_normalize__(
@@ -381,7 +291,7 @@ var __vue_staticRenderFns__ = [];
     __vue_is_functional_template__,
     __vue_module_identifier__,
     undefined,
-    __vue_create_injector_ssr__
+    undefined
   );
 
 var script$1 = {
@@ -505,11 +415,7 @@ function SkyRevealStore(Vue) {
 		},
 	});
 
-	Object.defineProperty(Vue.prototype, '$SkyReveal', {
-		get: function get() {
-			return instance
-		}
-	});
+	Vue.util.defineReactive(Vue.prototype, '$SkyOverlay', instance);
 }
 
 var defaults = {
