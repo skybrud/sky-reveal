@@ -1,15 +1,15 @@
 import anime from 'animejs';
 
 function heightSummation (element, innerElement) {
-	const isBrowser = typeof window !== 'undefined';
+	var isBrowser = typeof window !== 'undefined';
 
-	const firstChild = innerElement.querySelector(':first-child');
-	const lastChild = innerElement.querySelector(':last-child');
-	const innerStyles = isBrowser && window.getComputedStyle(innerElement);
-	const targetStyles = isBrowser && window.getComputedStyle(element);
+	var firstChild = innerElement.querySelector(':first-child');
+	var lastChild = innerElement.querySelector(':last-child');
+	var innerStyles = isBrowser && window.getComputedStyle(innerElement);
+	var targetStyles = isBrowser && window.getComputedStyle(element);
 
-	let firstChildStyles = null;
-	let lastChildStyles = null;
+	var firstChildStyles = null;
+	var lastChildStyles = null;
 
 	if (firstChild) {
 		firstChildStyles = isBrowser && window.getComputedStyle(firstChild);
@@ -19,7 +19,7 @@ function heightSummation (element, innerElement) {
 		lastChildStyles = isBrowser && window.getComputedStyle(lastChild);
 	}
 
-	let returnValue = 0;
+	var returnValue = 0;
 
 	if (isBrowser) {
 		returnValue += Number(targetStyles.paddingTop.replace('px', ''));
@@ -41,13 +41,13 @@ function heightSummation (element, innerElement) {
 }
 
 function animeInstance (target, collapsed, autoHeight, duration, storeRef) {
-	let onComplete = () => {};
+	var onComplete = function () {};
 
-	const anim = anime({
+	var anim = anime({
 		targets: target,
 		height: [collapsed, autoHeight],
 		direction: 'reverse',
-		complete: (self) => {
+		complete: function (self) {
 			if (!self.reversed) {
 				target.removeAttribute('style');
 			}
@@ -59,13 +59,13 @@ function animeInstance (target, collapsed, autoHeight, duration, storeRef) {
 			self.completed = false;
 		},
 		autoplay: false,
-		duration,
+		duration: duration,
 		easing: 'easeInOutCubic',
 	});
 
 	return {
-		play() {
-			return new Promise((resolve) => {
+		play: function play() {
+			return new Promise(function (resolve) {
 				onComplete = resolve;
 				anim.play();
 				anim.reverse();
@@ -83,16 +83,16 @@ function animeInstance (target, collapsed, autoHeight, duration, storeRef) {
 	};
 }
 
-var Revealer = (target, innerTarget, duration, storeRef) => {
-	const isBrowser = typeof window !== 'undefined';
-	const collapsed = (isBrowser && window.getComputedStyle(target).minHeight) || 0;
-	let anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration, storeRef);
+function Revealer (target, innerTarget, duration, storeRef) {
+	var isBrowser = typeof window !== 'undefined';
+	var collapsed = (isBrowser && window.getComputedStyle(target).minHeight) || 0;
+	var anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration, storeRef);
 
-	const reInstantiate = () => {
+	var reInstantiate = function () {
 		anim = animeInstance(target, collapsed, heightSummation(target, innerTarget), duration, storeRef);
 	};
 
-	const open = () => new Promise((resolve) => {
+	var open = function () { return new Promise(function (resolve) {
 		if (anim.reversed) {
 			if (anim.animations[0].tweens[0].value[1] !== heightSummation(target, innerTarget)) {
 				reInstantiate();
@@ -102,29 +102,29 @@ var Revealer = (target, innerTarget, duration, storeRef) => {
 		} else {
 			resolve();
 		}
-	});
+	}); };
 
-	const close = () => new Promise((resolve) => {
+	var close = function () { return new Promise(function (resolve) {
 		if (!anim.reversed) {
 			anim.play()
 				.then(resolve);
 		} else {
 			resolve();
 		}
-	});
+	}); };
 
-	const toggle = () => {
+	var toggle = function () {
 		anim.progress > 0
 			? close()
 			: open();
 	};
 
 	return {
-		open,
-		close,
-		toggle,
+		open: open,
+		close: close,
+		toggle: toggle,
 	};
-};
+}
 
 var script = {
 	name: 'SkyReveal',
@@ -136,7 +136,7 @@ var script = {
 			default: 500,
 		},
 	},
-	data() {
+	data: function data() {
 		return {
 			revealer: null,
 			activeToggle: false,
@@ -146,20 +146,20 @@ var script = {
 		};
 	},
 	computed: {
-		ariaExpanded() {
+		ariaExpanded: function ariaExpanded() {
 			/**
 			 * Needs to stringify ariaExpanded bool to avoid ariaExpanded
 			 * being removed by VueJs
 			 **/
-			return `${this.isOpen}`;
+			return ("" + (this.isOpen));
 		},
 	},
 	watch: {
-		open(val) {
+		open: function open(val) {
 			this.isOpen = val;
 		},
 	},
-	created() {
+	created: function created() {
 		if (this.revealId !== undefined) {
 			this.$SkyReveal.$on('toggle', this.toggledByTrigger);
 		} else if (this.open !== undefined) {
@@ -168,12 +168,12 @@ var script = {
 			console.error('SkyReveal must have either "open" or "revealId" attribute!');
 		}
 	},
-	mounted() {
+	mounted: function mounted() {
 		this.revealer = Revealer(
 			this.$refs.main,
 			this.$refs.inner,
 			this.duration,
-			this.$SkyReveal,
+			this.$SkyReveal
 		);
 
 		// If open from start
@@ -181,13 +181,15 @@ var script = {
 			this.openRevealer();
 		}
 	},
-	updated() {
+	updated: function updated() {
 		this.isOpen
 			? this.openRevealer()
 			: this.closeRevealer();
 	},
 	methods: {
-		openRevealer() {
+		openRevealer: function openRevealer() {
+			var this$1 = this;
+
 			// Use this.revealed as a safeguard to prevent false triggers
 			// when revealer is already open
 			if (!this.revealed) {
@@ -196,13 +198,15 @@ var script = {
 
 				this.$emit('open');
 				this.revealer.open()
-					.then(() => {
-						this.animating = false;
-						this.$emit('open-done');
+					.then(function () {
+						this$1.animating = false;
+						this$1.$emit('open-done');
 					});
 			}
 		},
-		closeRevealer() {
+		closeRevealer: function closeRevealer() {
+			var this$1 = this;
+
 			// Use this.revealed as a safeguard to prevent false triggers
 			// when revealer is already closed
 			if (this.revealed) {
@@ -211,13 +215,13 @@ var script = {
 
 				this.$emit('close');
 				this.revealer.close()
-					.then(() => {
-						this.animating = false;
-						this.$emit('close-done');
+					.then(function () {
+						this$1.animating = false;
+						this$1.$emit('close-done');
 					});
 			}
 		},
-		toggledByTrigger(data) {
+		toggledByTrigger: function toggledByTrigger(data) {
 			if (this.revealId === data.id) {
 				this.isOpen = data.isOpen;
 			}
@@ -226,7 +230,7 @@ var script = {
 };
 
 /* script */
-            const __vue_script__ = script;
+            var __vue_script__ = script;
 /* template */
 var __vue_render__ = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"main",class:['sky-reveal', {
 		closed: !_vm.isOpen,
@@ -235,20 +239,20 @@ var __vue_render__ = function () {var _vm=this;var _h=_vm.$createElement;var _c=
 var __vue_staticRenderFns__ = [];
 
   /* style */
-  const __vue_inject_styles__ = undefined;
+  var __vue_inject_styles__ = undefined;
   /* scoped */
-  const __vue_scope_id__ = undefined;
+  var __vue_scope_id__ = undefined;
   /* module identifier */
-  const __vue_module_identifier__ = undefined;
+  var __vue_module_identifier__ = undefined;
   /* functional template */
-  const __vue_is_functional_template__ = false;
+  var __vue_is_functional_template__ = false;
   /* component normalizer */
   function __vue_normalize__(
     template, style, script$$1,
     scope, functional, moduleIdentifier,
     createInjector, createInjectorSSR
   ) {
-    const component = (typeof script$$1 === 'function' ? script$$1.options : script$$1) || {};
+    var component = (typeof script$$1 === 'function' ? script$$1.options : script$$1) || {};
 
     // For security concerns, we use only base name in production mode.
     component.__file = "SkyReveal.vue";
@@ -258,7 +262,7 @@ var __vue_staticRenderFns__ = [];
       component.staticRenderFns = template.staticRenderFns;
       component._compiled = true;
 
-      if (functional) component.functional = true;
+      if (functional) { component.functional = true; }
     }
 
     component._scopeId = scope;
@@ -290,19 +294,19 @@ var script$1 = {
 			required: true,
 		},
 	},
-	data() {
+	data: function data() {
 		return {
 			isOpen: false,
 		};
 	},
-	created() {
+	created: function created() {
 		this.$SkyReveal.register({ id: this.revealId, isOpen: this.isOpen });
 	},
-	beforeDestroy() {
+	beforeDestroy: function beforeDestroy() {
 		this.$SkyReveal.unregister(this.revealId);
 	},
 	methods: {
-		toggle() {
+		toggle: function toggle() {
 			this.isOpen = !this.isOpen;
 
 			this.$SkyReveal.$emit('toggle', { id: this.revealId, isOpen: this.isOpen });
@@ -311,27 +315,27 @@ var script$1 = {
 };
 
 /* script */
-            const __vue_script__$1 = script$1;
+            var __vue_script__$1 = script$1;
             
 /* template */
 var __vue_render__$1 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('button',{class:['sky-reveal-trigger', {open: _vm.isOpen}],on:{"click":_vm.toggle}},[_vm._t("svg"),_vm._v(" "),_vm._t("svg-prepend"),_vm._v(" "),(!_vm.isOpen)?_vm._t("open"):_vm._t("closed"),_vm._v(" "),_vm._t("svg-append")],2)};
 var __vue_staticRenderFns__$1 = [];
 
   /* style */
-  const __vue_inject_styles__$1 = undefined;
+  var __vue_inject_styles__$1 = undefined;
   /* scoped */
-  const __vue_scope_id__$1 = undefined;
+  var __vue_scope_id__$1 = undefined;
   /* module identifier */
-  const __vue_module_identifier__$1 = undefined;
+  var __vue_module_identifier__$1 = undefined;
   /* functional template */
-  const __vue_is_functional_template__$1 = false;
+  var __vue_is_functional_template__$1 = false;
   /* component normalizer */
   function __vue_normalize__$1(
     template, style, script,
     scope, functional, moduleIdentifier,
     createInjector, createInjectorSSR
   ) {
-    const component = (typeof script === 'function' ? script.options : script) || {};
+    var component = (typeof script === 'function' ? script.options : script) || {};
 
     // For security concerns, we use only base name in production mode.
     component.__file = "SkyRevealTrigger.vue";
@@ -341,7 +345,7 @@ var __vue_staticRenderFns__$1 = [];
       component.staticRenderFns = template.staticRenderFns;
       component._compiled = true;
 
-      if (functional) component.functional = true;
+      if (functional) { component.functional = true; }
     }
 
     component._scopeId = scope;
@@ -366,30 +370,38 @@ var __vue_staticRenderFns__$1 = [];
   );
 
 function SkyRevealStore(Vue) {
-	const instance = new Vue({
-		data() {
+	var instance = new Vue({
+		data: function data() {
 			return {
 				states: {},
 			};
 		},
-		created() {
-			this.$on('toggle', ({ id, isOpen }) => {
-				this.states[id] === undefined
-					? console.warn(`[SkyReveal] The following id is not registred: ${id}`)
-					: this.states[id] = isOpen;
+		created: function created() {
+			var this$1 = this;
+
+			this.$on('toggle', function (ref) {
+				var id = ref.id;
+				var isOpen = ref.isOpen;
+
+				this$1.states[id] === undefined
+					? console.warn(("[SkyReveal] The following id is not registred: " + id))
+					: this$1.states[id] = isOpen;
 			});
-			this.$on('heightChanged', () => {
-				this.$emit('updated');
+			this.$on('heightChanged', function () {
+				this$1.$emit('updated');
 			});
 		},
 		methods: {
-			register({ id, isOpen }) {
+			register: function register(ref) {
+				var id = ref.id;
+				var isOpen = ref.isOpen;
+
 				this.$set(this.states, id, isOpen);
 			},
-			unregister(id) {
+			unregister: function unregister(id) {
 				this.$delete(this.states, id);
 			},
-			getState(key) {
+			getState: function getState(key) {
 				return this.states[key];
 			},
 		},
@@ -398,12 +410,13 @@ function SkyRevealStore(Vue) {
 	Vue.util.defineReactive(Vue.prototype, '$SkyOverlay', instance);
 }
 
-const defaults = {
+var defaults = {
 	registerComponents: true,
 };
 
 function install(Vue, options) {
-	const { registerComponents } = Object.assign({}, defaults, options);
+	var ref = Object.assign({}, defaults, options);
+	var registerComponents = ref.registerComponents;
 
 	if (registerComponents) {
 		Vue.use(SkyRevealStore);
