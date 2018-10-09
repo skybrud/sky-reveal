@@ -28,5 +28,5 @@ export default function SkyRevealStore(Vue) {
 		},
 	});
 
-	Vue.util.defineReactive(Vue.prototype, '$SkyOverlay', instance);
+	Vue.util.defineReactive(Vue.prototype, '$SkyReveal', instance);
 }

@@ -15,9 +15,9 @@ export {
 export default function install(Vue, options) {
 	const { registerComponents } = Object.assign({}, defaults, options);
 
-	if (registerComponents) {
-		Vue.use(SkyRevealStore);
+	Vue.use(SkyRevealStore);
 
+	if (registerComponents) {
 		// Main component
 		Vue.component(SkyReveal.name, SkyReveal);
 

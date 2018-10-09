@@ -413,7 +413,7 @@ function SkyRevealStore(Vue) {
 		},
 	});
 
-	Vue.util.defineReactive(Vue.prototype, '$SkyOverlay', instance);
+	Vue.util.defineReactive(Vue.prototype, '$SkyReveal', instance);
 }
 
 var defaults = {
@@ -424,9 +424,9 @@ function install(Vue, options) {
 	var ref = Object.assign({}, defaults, options);
 	var registerComponents = ref.registerComponents;
 
-	if (registerComponents) {
-		Vue.use(SkyRevealStore);
+	Vue.use(SkyRevealStore);
 
+	if (registerComponents) {
 		// Main component
 		Vue.component(SkyReveal.name, SkyReveal);
 
