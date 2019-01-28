@@ -241,7 +241,7 @@ var script = {
 var __vue_render__ = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"main",class:['sky-reveal', {
 		closed: !_vm.isOpen,
 		animating: _vm.animating,
-	}],staticStyle:{"height":"0px"},attrs:{"aria-expanded":_vm.ariaExpanded}},[_vm._ssrNode("<div class=\"inner\">","</div>",[_c('transition',{attrs:{"name":"sky-reveal-anim","duration":500}},[(_vm.isOpen)?_c('div',[_vm._t("default")],2):_vm._e()])],1)])};
+	}],staticStyle:{"height":"0px"},attrs:{"aria-expanded":_vm.ariaExpanded}},[_vm._ssrNode("<div class=\"inner\">","</div>",[_c('transition',{attrs:{"name":"sky-reveal-anim","duration":500}},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.isOpen),expression:"isOpen"}]},[_vm._t("default")],2)])],1)])};
 var __vue_staticRenderFns__ = [];
 
   /* style */
